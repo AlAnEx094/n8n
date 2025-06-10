@@ -1,17 +1,16 @@
 FROM docker.n8n.io/n8nio/n8n:next
 
-
 USER root
 
 RUN apk add --no-cache ffmpeg curl git
 
-# Клонируем основной репозиторий n8n
+# Клонируем репозиторий n8n
 RUN git clone https://github.com/n8n-io/n8n.git /tmp/n8n
 
-# Копируем Telegram-ноды и создаем кастомный пакет
-RUN mkdir -p /home/node/custom-nodes/n8n-nodes-telegram-custom/nodes/Telegram && \
+# Копируем Telegram-ноды и создаем структуру
+RUN mkdir -p /home/node/custom-nodes/n8n-nodes-telegram-custom/nodes/Telegram/credentials && \
     cp -r /tmp/n8n/packages/nodes-base/nodes/Telegram/* /home/node/custom-nodes/n8n-nodes-telegram-custom/nodes/Telegram/ && \
-    cp -r /tmp/n8n/packages/nodes-base/credentials/TelegramApi.credentials.ts /home/node/custom-nodes/n8n-nodes-telegram-custom/nodes/Telegram/credentials/
+    cp /tmp/n8n/packages/nodes-base/credentials/TelegramApi.credentials.ts /home/node/custom-nodes/n8n-nodes-telegram-custom/nodes/Telegram/credentials/
 
 # Создаем package.json
 RUN echo '{ \
